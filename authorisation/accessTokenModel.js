@@ -5,11 +5,11 @@ module.exports = (injectedUserDBHelper, injectedAccessTokensDBHelper) => {
   userDBHelper = injectedUserDBHelper;
   accessTokensDBHelper = injectedAccessTokensDBHelper;
   return {
-    getClient: getClient,
-    saveAccessToken: saveAccessToken,
-    getUser: getUser,
+    getClient       : getClient,
+    saveAccessToken : saveAccessToken,
+    getUser         : getUser,
     grantTypeAllowed: grantTypeAllowed,
-    getAccessToken: getAccessToken
+    getAccessToken  : getAccessToken
   };
 };
 

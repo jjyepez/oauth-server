@@ -42,7 +42,9 @@ function registerUser(req, res) {
   });
 }
 
-function login(registerUserQuery, res) {}
+function login(registerUserQuery, res) {
+  
+}
 
 function sendResponse(res, message, error) {
   res.status(error !== null ? (error !== null ? 400 : 200) : 400).json({

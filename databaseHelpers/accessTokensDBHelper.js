@@ -11,7 +11,7 @@ module.exports = injectedPgSqlConnection => {
 };
 
 function saveAccessToken(accessToken, userID, callback) {
-  const getUserQuery = `INSERT INTO access_tokens (access_token, user_id) VALUES ("${accessToken}", ${userID}) ON DUPLICATE KEY UPDATE access_token = "${accessToken}";`;
+  const getUserQuery = `INSERT INTO access_tokens (access_token, user_id) VALUES ('${accessToken}', ${userID}) ON CONFLICT (id) DO UPDATE SET access_token = '${accessToken}';`;
 
   pgSqlConnection.query(getUserQuery, dataResponseObject => {
     callback(dataResponseObject.error);

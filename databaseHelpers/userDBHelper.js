@@ -19,7 +19,8 @@ function registerUserInDB(username, password, registrationCallback) {
 
 function getUserFromCrentials(username, password, callback) {
   const getUserQuery = `SELECT * FROM users WHERE username = '${username}' AND user_password = MD5('${password}')`;
-  console.log("getUserFromCrentials query is: ", getUserQuery);
+  
+  // --- console.log("getUserFromCrentials query is: ", getUserQuery);
 
   pgSqlConnection.query(getUserQuery, dataResponseObject => {
     callback(
@@ -43,7 +44,6 @@ function doesUserExist(username, callback) {
           : false
         : null;
 
-    console.log('EXISTS?:', dataResponseObject);
     callback(dataResponseObject.error, doesUserExist);
   };
 
