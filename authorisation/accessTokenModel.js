@@ -16,20 +16,28 @@ module.exports = (injectedUserDBHelper, injectedAccessTokensDBHelper) => {
 };
 
 function getClient(clientID, clientSecret, callback) {
-  const client = {
-    clientID,
-    clientSecret,
-    grants: null,
-    redirectUris: null
-  };
+  let rslt = false;
+  const allowedClientID = process.env.OAUTH_CLIENT_ID;
+  const allowedClientSecret = process.env.OAUTH_CLIENT_SECRET;
+  const allowedScope = process.env.OAUTH_SCOPE;
+  // -- se debe revisar y completar esta lógica
+  let client = null;
+  if(
+    clientID === process.env.OAUTH_CLIENT_ID
+    && clientSecret === process.env.OAUTH_CLIENT_SECRET
+  ){
+    client = {
+      clientID,
+      clientSecret,
+      grants: null,
+      redirectUris: null
+    };
+  }
   callback(false, client);
 }
 
 function grantTypeAllowed(clientID, grantType, callback) {
   let rslt = false;
-  const allowedClientID = process.env.OAUTH_CLIENT_ID;
-  const allowedClientSecret = process.env.OAUTH_CLIENT_SECRET;
-  const allowedScope = process.env.OAUTH_SCOPE;
   const allowedGrantType = process.env.OAUTH_GRANT_TYPE;
   // -- se debe revisar y completar esta lógica
   if(

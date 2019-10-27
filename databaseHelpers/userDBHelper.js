@@ -22,9 +22,6 @@ function getUserFromCrentials(username, password, callback) {
   
   console.log("getUserFromCrentials query is: ", getUserQuery);
 
-  callback(true, null); // CREDENCIALES INVALIDAS
-  return;
-
   pgSqlConnection.query(getUserQuery, dataResponseObject => {
     callback(
       false,
