@@ -1,45 +1,70 @@
-//MARK: --- REQUIRE MODULES
 
-const port = 8080
-const mySqlConnection = require('./databaseHelpers/mySqlWrapper')
-const accessTokenDBHelper = require('./databaseHelpers/accessTokensDBHelper')(mySqlConnection)
-const userDBHelper = require('./databaseHelpers/userDBHelper')(mySqlConnection)
-const oAuthModel = require('./authorisation/accessTokenModel')(userDBHelper, accessTokenDBHelper)
-const oAuth2Server = require('node-oauth2-server')
-const express = require('express')
-const expressApp = express()
+require("dotenv").config();
+
+const port = process.env.SERVER_PORT || 8001;
+const host = process.env.SERVER_HOST || "localhost";
+
+const pgSqlConnection = require("./databaseHelpers/pgSqlWrapper");
+
+const accessTokenDBHelper = require("./databaseHelpers/accessTokensDBHelper")(
+  pgSqlConnection
+);
+
+const userDBHelper = require("./databaseHelpers/userDBHelper")(pgSqlConnection);
+
+const oAuthModel = require("./authorisation/accessTokenModel")(
+  userDBHelper,
+  accessTokenDBHelper
+);
+
+const oAuth2Server = require("node-oauth2-server");
+const express = require("express");
+const expressApp = express();
+
 expressApp.oauth = oAuth2Server({
   model: oAuthModel,
-  grants: ['password'],
+  grants: ["password"],
   debug: true
-})
+});
 
-const restrictedAreaRoutesMethods = require('./restrictedArea/restrictedAreaRoutesMethods.js')
-const restrictedAreaRoutes = require('./restrictedArea/restrictedAreaRoutes.js')(express.Router(), expressApp, restrictedAreaRoutesMethods)
-const authRoutesMethods = require('./authorisation/authRoutesMethods')(userDBHelper)
-const authRoutes = require('./authorisation/authRoutes')(express.Router(), expressApp, authRoutesMethods)
-const bodyParser = require('body-parser')
+const restrictedAreaRoutesMethods = require("./restrictedArea/restrictedAreaRoutesMethods.js");
 
-//MARK: --- REQUIRE MODULES
+const restrictedAreaRoutes = require("./restrictedArea/restrictedAreaRoutes.js")(
+  express.Router(),
+  expressApp,
+  restrictedAreaRoutesMethods
+);
 
-//MARK: --- INITIALISE MIDDLEWARE & ROUTES
+const authRoutesMethods = require("./authorisation/authRoutesMethods")(
+  userDBHelper
+);
 
-//set the bodyParser to parse the urlencoded post data
-expressApp.use(bodyParser.urlencoded({ extended: true }))
+const authRoutes = require("./authorisation/authRoutes")(
+  express.Router(),
+  expressApp,
+  authRoutesMethods
+);
 
-//set the oAuth errorHandler
-expressApp.use(expressApp.oauth.errorHandler())
+const bodyParser = require("body-parser");
 
-//set the authRoutes for registration and & login requests
-expressApp.use('/auth', authRoutes)
+expressApp.use(bodyParser.urlencoded({ extended: true }));
+expressApp.use(expressApp.oauth.errorHandler());
+expressApp.use(require("morgan")("dev"));
 
-//set the restrictedAreaRoutes used to demo the accesiblity or routes that ar OAuth2 protected
-expressApp.use('/restrictedArea', restrictedAreaRoutes)
+expressApp.get("/", (req, res, next) => {
+  res.send("it works!");
+});
 
-//MARK: --- INITIALISE MIDDLEWARE & ROUTES
+expressApp.use("/auth", authRoutes);
+expressApp.use("/restrictedArea", restrictedAreaRoutes);
 
-//init the server
+expressApp.use((req, res, next) => {
+  console.log(404);
+  res.status(404).json({
+    error: "Not found"
+  });
+});
+
 expressApp.listen(port, () => {
-
-   console.log(`listening on port ${port}`)
-})
+  console.log(`Server listening: http://${host}:${port}`);
+});
