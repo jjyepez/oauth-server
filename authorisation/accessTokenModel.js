@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 let userDBHelper;
 let accessTokensDBHelper;
 
@@ -5,11 +7,11 @@ module.exports = (injectedUserDBHelper, injectedAccessTokensDBHelper) => {
   userDBHelper = injectedUserDBHelper;
   accessTokensDBHelper = injectedAccessTokensDBHelper;
   return {
-    getClient       : getClient,
-    saveAccessToken : saveAccessToken,
-    getUser         : getUser,
+    getClient: getClient,
+    saveAccessToken: saveAccessToken,
+    getUser: getUser,
     grantTypeAllowed: grantTypeAllowed,
-    getAccessToken  : getAccessToken
+    getAccessToken: getAccessToken
   };
 };
 
@@ -24,13 +26,24 @@ function getClient(clientID, clientSecret, callback) {
 }
 
 function grantTypeAllowed(clientID, grantType, callback) {
+  let rslt = false;
+  const allowedClientID = process.env.OAUTH_CLIENT_ID;
+  const allowedClientSecret = process.env.OAUTH_CLIENT_SECRET;
+  const allowedScope = process.env.OAUTH_SCOPE;
+  const allowedGrantType = process.env.OAUTH_GRANT_TYPE;
+  // -- se debe revisar y completar esta lógica
+  if(
+    grantType === allowedGrantType
+  ){
+    rslt = true;
+  }
   console.log(
     "grantTypeAllowed called and clientID is: ",
     clientID,
     " and grantType is: ",
     grantType
   );
-  callback(false, true);
+  callback(false, rslt);
 }
 
 function getUser(username, password, callback) {

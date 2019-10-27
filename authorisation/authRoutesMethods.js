@@ -43,7 +43,7 @@ function registerUser(req, res) {
 }
 
 function login(registerUserQuery, res) {
-  
+  console.log('LOGGING IN');
 }
 
 function sendResponse(res, message, error) {
