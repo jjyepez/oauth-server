@@ -46,10 +46,20 @@ const authRoutes = require("./authorisation/authRoutes")(
 );
 
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 expressApp.use(bodyParser.urlencoded({ extended: true }));
-expressApp.use(expressApp.oauth.errorHandler());
+expressApp.use(cors());
 expressApp.use(require("morgan")("dev"));
+
+expressApp.use(expressApp.oauth.errorHandler());
+
+expressApp.use((req, res, next)=>{
+  const k = Object.keys(req.body)[0];
+  req.body = JSON.parse(k);
+  console.log(req.body);
+  next();
+})
 
 expressApp.get("/", (req, res, next) => {
   res.send("it works!");
