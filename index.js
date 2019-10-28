@@ -71,14 +71,15 @@ expressApp.get("/", (req, res, next) => {
 
 expressApp.use("/auth", authRoutes);
 
-// --- expressApp.use("/restrictedArea", restrictedAreaRoutes);
+expressApp.use("/restrictedArea", restrictedAreaRoutes);
 
-expressApp.use("/restrictedArea/enter", expressApp.oauth.authorise(), (req, res, next) => {
+/* expressApp.use("/restrictedArea/enter", expressApp.oauth.authorise(), (req, res, next) => {
   res
   .status(200)
   .send('Access granted!');
   next();
 })
+ */
 
 expressApp.use((req, res, next) => {
   console.log(404);
