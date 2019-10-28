@@ -55,10 +55,12 @@ expressApp.use(require("morgan")("dev"));
 expressApp.use(expressApp.oauth.errorHandler());
 
 expressApp.use((req, res, next)=>{
-  if(Object.keys(req.body).length <= 1 ){
-    const k = Object.keys(req.body)[0];
-    req.body = JSON.parse(k);
-    //console.log(req);
+  // custom middleware ---
+  if(Object.keys(req.body).length > 0 ){ // solo si llega algo en el body
+    if(Object.keys(req.body).length <= 1 ){ // solo si el body tiene una sola linea con todos los datos (MAL FORMATEADO)
+      const k = Object.keys(req.body)[0];
+      req.body = JSON.parse(k);
+    }
   }
   next();
 })
@@ -68,7 +70,15 @@ expressApp.get("/", (req, res, next) => {
 });
 
 expressApp.use("/auth", authRoutes);
-expressApp.use("/restrictedArea", restrictedAreaRoutes);
+
+// --- expressApp.use("/restrictedArea", restrictedAreaRoutes);
+
+expressApp.use("/restrictedArea/enter", expressApp.oauth.authorise(), (req, res, next) => {
+  res
+  .status(200)
+  .send('Access granted!');
+  next();
+})
 
 expressApp.use((req, res, next) => {
   console.log(404);
