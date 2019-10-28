@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "98703902-0da6-4ba1-aee6-0e354277a234",
+		"name": "oAuth_Server Aguas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /auth/registerUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "926731c3160b3d7993e13bd952ebf54fba259e8a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "000000",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "Kayas6a7lP1EJB6cl7MaCbhdrH7Tbr1qhlclIy0a",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "2WWoppRSfgDiYdqCbpjD1fQXsBKa5JPanao",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urlServer}}/auth/registerUser",
+					"host": [
+						"{{urlServer}}"
+					],
+					"path": [
+						"auth",
+						"registerUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /auth/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "julio",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "Kayas6a7lP1EJB6cl7MaCbhdrH7Tbr1qhlclIy0a",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "2WWoppRSfgDiYdqCbpjD1fQXsBKa5JPanao",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "all",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlServer}}/auth/login",
+					"host": [
+						"{{urlServer}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /restrictedArea/enter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "926731c3160b3d7993e13bd952ebf54fba259e8a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{urlServer}}/restrictedArea/enter",
+					"host": [
+						"{{urlServer}}"
+					],
+					"path": [
+						"restrictedArea",
+						"enter"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -55,9 +55,11 @@ expressApp.use(require("morgan")("dev"));
 expressApp.use(expressApp.oauth.errorHandler());
 
 expressApp.use((req, res, next)=>{
-  const k = Object.keys(req.body)[0];
-  req.body = JSON.parse(k);
-  console.log(req.body);
+  if(Object.keys(req.body).length <= 1 ){
+    const k = Object.keys(req.body)[0];
+    req.body = JSON.parse(k);
+    //console.log(req);
+  }
   next();
 })
 
